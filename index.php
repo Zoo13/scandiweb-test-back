@@ -32,7 +32,15 @@ switch ($request_uri) {
         echo json_encode(Product::$errorsMessages);
         break;
     case "/scandiTest/php/delete":
-        Product::massDelete(json_decode(file_get_contents('php://input')));
+        $products = json_decode(file_get_contents('php://input'));
+        
+        if (empty($products)) {
+            echo json_encode("Nothing to delete");
+            break;
+        }
+
+        Product::massDelete($products);
+        echo json_encode("Successfully deleted");
     case "/scandiTest/php/getProducts";
         echo json_encode(Product::getProducts());
         break;
